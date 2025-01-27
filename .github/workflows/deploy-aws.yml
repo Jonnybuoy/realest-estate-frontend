@@ -7,7 +7,7 @@ jobs:
   deploy: 
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source code
+      - name: Checkout sourcee code
         uses: actions/checkout@v2
 
       - name: Generate deployment package
