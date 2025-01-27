@@ -1,11 +1,13 @@
-FROM node:14 as builder
+# Build the app
+FROM node:14 AS builder
 WORKDIR /app
-COPY package.json .
-RUN npm install
+COPY package.json package-lock.json ./
+RUN npm install --production --legacy-peer-deps
 COPY . .
-RUN ls -al /app
 RUN npm run build
 
-FROM nginx
-EXPOSE 80
+# Serve the app with Nginx
+FROM nginx:alpine
 COPY --from=builder /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
