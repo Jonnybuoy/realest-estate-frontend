@@ -1,12 +1,12 @@
-# Build the app
-FROM node:14 AS builder
+# Build stage
+FROM node:20 AS builder
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm install --production --legacy-peer-deps
+COPY package*.json ./
+RUN npm ci --omit=dev
 COPY . .
 RUN npm run build
 
-# Serve the app with Nginx
+# Serve stage using nginx
 FROM nginx:alpine
 COPY --from=builder /app/build /usr/share/nginx/html
 EXPOSE 80
